@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,29 +18,28 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public List<Department> getAllDepartments() {
-        return departmentService.findAll();
+    public ResponseEntity<List<Department>> getAllDepartments() {
+        return ResponseEntity.ok(departmentService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public Department getById(@PathVariable Long id) {
-        return departmentService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+    @GetMapping("/{name}")
+    public ResponseEntity<String> getByName(@PathVariable String name) {
+        return ResponseEntity.ok(departmentService.findByName(name).toString());
     }
 
     @PostMapping
-    public Department createDepartment(@RequestBody Department department) {
-        return departmentService.createDepartment(department);
+    public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
+        return ResponseEntity.ok(departmentService.save(department));
     }
 
     @PutMapping("/{id}")
-    public Department updateDepartment(@PathVariable Long id, @RequestBody Department department) {
-        return departmentService.updateDepartment(id, department);
+    public ResponseEntity<Department> updateDepartment(@PathVariable Long id, @RequestBody Department department) {
+        return ResponseEntity.ok(departmentService.updateDepartment(id, department));
     }
 
     @DeleteMapping("/{id}")
     public void deleteDepartment(@PathVariable Long id) {
-        departmentService.deleteDepartment(id);
+        departmentService.delete(id);
     }
 
 }

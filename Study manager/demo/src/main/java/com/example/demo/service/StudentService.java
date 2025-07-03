@@ -9,24 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentService {
+public class StudentService extends GenericService<Student, Long> {
 
     private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
+        super(studentRepository);
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> findAll() {
-        return studentRepository.findAll();
-    }
-
-    public Optional<Student> findById(Long id) {
-        return studentRepository.findById(id);
-    }
-
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    public Optional<Student> findByEmail(String email) {
+        return studentRepository.findByEmail(email);
     }
 
     public Student updateStudent(Long id ,Student updatedStudent) {
@@ -42,10 +35,6 @@ public class StudentService {
             student.setAverage(updatedStudent.getAverage());
             return studentRepository.save(student);
         }).orElseThrow(() -> new RuntimeException("Student not found"));
-    }
-
-    public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
     }
 
 }

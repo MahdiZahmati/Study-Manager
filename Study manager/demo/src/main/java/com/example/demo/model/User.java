@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -11,14 +12,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
     private String email;
+    @NotNull
     private long nationalId;
     private String phoneNumber;
     private String address;
     private String city;
 
+
+    //constructors
     public User(String firstName, String lastName, String email, long nationalId,
                 String phoneNumber, String address, String city) {
         this.firstName = firstName;
@@ -29,10 +36,7 @@ public class User {
         this.address = address;
         this.city = city;
     }
-
-    public User() {
-
-    }
+    public User() {}
 
 
     //getters & setters

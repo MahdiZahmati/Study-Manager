@@ -29,7 +29,7 @@ public class ProfessorController {
 
     @PostMapping
     public Professor createProfessor(@RequestBody Professor professor) {
-        return professorService.createProfessor(professor);
+        return professorService.save(professor);
     }
 
     @PutMapping("/{id}")
@@ -39,7 +39,7 @@ public class ProfessorController {
 
     @DeleteMapping("/{id}")
     public void deleteProfessor(@PathVariable Long id) {
-        professorService.deleteProfessor(id);
+        professorService.delete(id);
     }
 
 }

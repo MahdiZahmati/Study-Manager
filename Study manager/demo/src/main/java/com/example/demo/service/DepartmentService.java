@@ -8,24 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DepartmentService {
+public class DepartmentService extends GenericService<Department, Long>{
 
     private final DepartmentRepository departmentRepository;
 
     public DepartmentService(DepartmentRepository departmentRepository) {
+        super(departmentRepository);
         this.departmentRepository = departmentRepository;
     }
 
-    public List<Department> findAll(){
-        return departmentRepository.findAll();
-    }
-
-    public Optional<Department> findById(Long id) {
-        return departmentRepository.findById(id);
-    }
-
-    public Department createDepartment(Department department) {
-        return departmentRepository.save(department);
+    public Optional<Department> findByName(String name) {
+        return departmentRepository.findByName(name);
     }
 
     public Department updateDepartment(Long id, Department updatedDepartment) {
@@ -34,10 +27,6 @@ public class DepartmentService {
             department.setName(updatedDepartment.getName());
             return departmentRepository.save(department);
         }).orElseThrow(() -> new RuntimeException("Department not found"));
-    }
-
-    public void deleteDepartment(Long id) {
-        departmentRepository.deleteById(id);
     }
 
 }

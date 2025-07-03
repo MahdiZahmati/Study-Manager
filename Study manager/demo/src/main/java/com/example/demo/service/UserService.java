@@ -9,24 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService extends GenericService<User, Long> {
 
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
+        super(userRepository);
         this.userRepository = userRepository;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public User creatUser(User user) {
-        return userRepository.save(user);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public User updateUser(Long id, User userUpdate) {
@@ -40,10 +33,6 @@ public class UserService {
             user.setAddress(userUpdate.getAddress());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("user not found"));
-    }
-
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
     }
 
 }

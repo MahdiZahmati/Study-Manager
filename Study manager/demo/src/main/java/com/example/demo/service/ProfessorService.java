@@ -9,24 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProfessorService {
+public class ProfessorService extends GenericService<Professor, Long> {
 
     private final ProfessorRepository professorRepository;
 
     public ProfessorService(ProfessorRepository professorRepository) {
+        super(professorRepository);
         this.professorRepository = professorRepository;
     }
 
-    public List<Professor> findAll() {
-        return professorRepository.findAll();
-    }
-
-    public Optional<Professor> findById(Long id) {
-        return professorRepository.findById(id);
-    }
-
-    public Professor createProfessor(Professor professor){
-        return professorRepository.save(professor);
+    public Optional<Professor> findByEmail(String email) {
+        return professorRepository.findByEmail(email);
     }
 
     public Professor updateProfessor(Long id, Professor updatedProfessor) {
@@ -41,11 +34,5 @@ public class ProfessorService {
             return professorRepository.save(professor);
         }).orElseThrow(() -> new RuntimeException("Professor not found"));
     }
-
-    public void deleteProfessor(Long id) {
-        professorRepository.deleteById(id);
-    }
-
-
 
 }
