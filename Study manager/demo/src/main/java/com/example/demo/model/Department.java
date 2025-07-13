@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +13,19 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(length = 20, nullable = false)
     private String name;
 
-    @NotNull
+    @Column(length = 20, nullable = false)
     private String manager;
 
-    @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Professor> professorList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Course> courseList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Student> studentList = new ArrayList<>();
 
 
@@ -64,4 +63,42 @@ public class Department {
     }
 
     //Relations Setters & Getters
+
+    public List<Professor> getProfessorList() {
+        return professorList;
+    }
+
+    public void setProfessorList(List<Professor> professorList) {
+        this.professorList = professorList;
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
+    }
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    //to string
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", manager='" + manager + '\'' +
+                ", professorList=" + professorList +
+                ", courseList=" + courseList +
+                ", studentList=" + studentList +
+                '}';
+    }
 }

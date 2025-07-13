@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +16,20 @@ public class Student extends User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "20.0")
+    @Column(nullable = false)
     private double average;
 
-    @NotNull
+    @Pattern(regexp = "^40\\d{6}$")
+    @Column(length = 8, nullable = false)
     private String studentCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "srudent_course",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -32,7 +37,7 @@ public class Student extends User{
     )
     private List<Course> courseList = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "student_professor",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -76,4 +81,43 @@ public class Student extends User{
     }
 
     //Relations Setters & Getters
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
+    }
+
+    public List<Professor> getProfessorList() {
+        return professorList;
+    }
+
+    public void setProfessorList(List<Professor> professorList) {
+        this.professorList = professorList;
+    }
+
+    //to string
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", average=" + average +
+                ", studentCode='" + studentCode + '\'' +
+                ", department=" + department +
+                ", courseList=" + courseList +
+                ", professorList=" + professorList +
+                '}';
+    }
+
 }

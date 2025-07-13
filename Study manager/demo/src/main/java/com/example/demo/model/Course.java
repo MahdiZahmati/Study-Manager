@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
+import com.example.demo.DTO.CoursePublicDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +16,21 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(length = 20 ,nullable = false)
     private String title;
 
-    @NotNull
+    @Min(value = 1)
+    @Max(value = 4)
+    @Column(nullable = false)
     private int unit;
 
-    @ManyToMany(mappedBy = "courseList")
+    @ManyToMany(mappedBy = "courseList", fetch = FetchType.LAZY)
     private List<Professor> professorList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "courseList")
+    @ManyToMany(mappedBy = "courseList", fetch = FetchType.LAZY)
     private List<Student> studentList = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 
@@ -64,6 +68,33 @@ public class Course {
 
     //Relations Setters & Getters
 
+
+    public List<Professor> getProfessorList() {
+        return professorList;
+    }
+
+    public void setProfessorList(List<Professor> professorList) {
+        this.professorList = professorList;
+    }
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    //to string
+
     @Override
     public String toString() {
         return "Course{" +
@@ -74,4 +105,5 @@ public class Course {
                 ", department=" + department +
                 '}';
     }
+
 }

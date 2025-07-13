@@ -14,7 +14,7 @@ public class Professor extends User {
     private Long id;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "professor_course",
             joinColumns = @JoinColumn(name = "professor_id"),
@@ -22,20 +22,32 @@ public class Professor extends User {
     )
     private List<Course> courseList = new ArrayList<>();
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @ManyToMany(mappedBy = "professorList")
+    @ManyToMany(mappedBy = "professorList", fetch = FetchType.LAZY)
     private List<Student> studentList = new ArrayList<>();
 
     //constructors
-    public Professor(String firstName, String lastName, String email, long nationalId,
-                     String phoneNumber, String address, String city) {
-        super(firstName, lastName, email, nationalId, phoneNumber, address, city);
-    }
     public Professor() {}
 
+    public Professor(String firstName, String lastName, String email, long nationalId,
+                     String phoneNumber, String address, String city, Long id,
+                     List<Course> courseList, Department department, List<Student> studentList) {
+        super(firstName, lastName, email, nationalId, phoneNumber, address, city);
+        this.id = id;
+        this.courseList = courseList;
+        this.department = department;
+        this.studentList = studentList;
+    }
+
+    public Professor(Long id, List<Course> courseList, Department department, List<Student> studentList) {
+        this.id = id;
+        this.courseList = courseList;
+        this.department = department;
+        this.studentList = studentList;
+    }
 
     //setters & getters
     public Long getId() {
@@ -46,6 +58,8 @@ public class Professor extends User {
         this.id = id;
     }
 
+    //Relations Setters & Getters
+
     public List<Course> getCourseList() {
         return courseList;
     }
@@ -54,5 +68,31 @@ public class Professor extends User {
         this.courseList = courseList;
     }
 
-    //Relations Setters & Getters
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    //to string
+
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "id=" + id +
+                ", courseList=" + courseList +
+                ", department=" + department +
+                ", studentList=" + studentList +
+                '}';
+    }
 }

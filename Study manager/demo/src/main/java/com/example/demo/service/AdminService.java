@@ -1,11 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.AdminDTO;
+import com.example.demo.DTO.CoursePublicDTO;
 import com.example.demo.model.Admin;
+import com.example.demo.model.Course;
 import com.example.demo.repository.AdminRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService extends GenericService<Admin, Long> {
@@ -17,8 +23,19 @@ public class AdminService extends GenericService<Admin, Long> {
         this.adminRepository = adminRepository;
     }
 
-    public Optional<Admin> findByUserName(String userName) {
-        return adminRepository.findByUserName(userName);
+    public Optional<Admin> findByUserName(String username) {
+        return adminRepository.findByUserName(username);
+    }
+
+    @Transactional(readOnly = true)
+    public String getAdminDTO(String username) {
+        Admin admin = adminRepository.findByUserName(username)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
+
+        Long id = admin.getId();
+        String password = admin.getPassword();
+
+        return new AdminDTO(id, username, password).toString();
     }
 
     public Admin updateAdmin(String username, Admin updatedAdmin) {

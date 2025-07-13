@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "admin")
@@ -12,10 +9,10 @@ public class Admin  {
     @Id
     private Long id;
 
-    @NotNull
+    @Column(length = 20, nullable = false, unique = true)
     private String userName;
 
-    @NotNull
+    @Column(length = 48, nullable = false)
     private String password;
 
     public Admin(Long id, String userName, String password) {

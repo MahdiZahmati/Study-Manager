@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -12,16 +11,25 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
+    @Column(length= 20, nullable = false)
     private String firstName;
-    @NotNull
+    @Column(length = 20, nullable = false)
     private String lastName;
-    @NotNull
+    @Column(length = 50, nullable = false)
     private String email;
-    @NotNull
+
+    @Pattern(regexp = "^\\d{10}$")
+    @Column(nullable = false)
     private long nationalId;
+
+    @Pattern(regexp = "^09\\d{9}$")
     private String phoneNumber;
+
+    @Column(length = 100)
     private String address;
+
+    @Column(length = 20)
     private String city;
 
 
@@ -103,4 +111,21 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
+
+    //to string
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", nationalId=" + nationalId +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
+
 }

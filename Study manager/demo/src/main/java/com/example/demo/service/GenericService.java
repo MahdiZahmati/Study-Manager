@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.GenericRepository;
+import com.example.demo.repository.GenericCRUDInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class GenericService<T, ID> implements GenericRepository<T, ID> {
+public class GenericService<T, ID> implements GenericCRUDInterface<T, ID> {
 
     private final JpaRepository<T, ID> repository;
 

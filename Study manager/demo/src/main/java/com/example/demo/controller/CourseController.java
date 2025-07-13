@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Course;
 import com.example.demo.service.CourseService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,32 +19,38 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getAllCourses() {
-        return courseService.findAll();
+    public ResponseEntity<List<Course>> getAllCourses() {
+        return ResponseEntity.ok().body(courseService.findAll());
     }
 
-    @GetMapping("/{title}")
-    public ResponseEntity<String> getByTitle(@PathVariable String title) {
-        try {
-            Optional<Course> course = courseService.findByTitle(title);
-            if (course.isPresent()) {
-                return ResponseEntity.ok().body(course.toString());
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/Admin/{title}")
+    public ResponseEntity<String> getAdminDTOByTitle(@PathVariable String title) {
+        Optional<Course> course = courseService.findByTitle(title);
+        if (course.isPresent()) {
+            return ResponseEntity.ok().body(courseService.getCourseAdminDTO(title));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/public/{title}")
+    public ResponseEntity<String> getPublicDTOByTitle(@PathVariable String title) {
+        Optional<Course> course = courseService.findByTitle(title);
+        if (course.isPresent()) {
+            return ResponseEntity.ok().body(courseService.getCoursePublicDTO(title));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(courseService.save(course));
+        return ResponseEntity.ok().body(courseService.save(course));
     }
 
     @PutMapping("/{title}")
-    public Course updateCourse(@PathVariable String title, @RequestBody Course updatedCourse) {
-        return courseService.updateCourse(title, updatedCourse);
+    public ResponseEntity<Course> updateCourse(@PathVariable String title, @RequestBody Course updatedCourse) {
+        return ResponseEntity.ok().body(courseService.updateCourse(title, updatedCourse));
     }
 
     @DeleteMapping("/{id}")

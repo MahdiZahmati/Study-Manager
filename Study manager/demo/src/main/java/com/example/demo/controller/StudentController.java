@@ -2,9 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Student;
 import com.example.demo.service.StudentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/student")
@@ -17,24 +19,37 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.findAll();
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return ResponseEntity.ok().body(studentService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public Student getById(@PathVariable Long id) {
-        return studentService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+    @GetMapping("/admin/{email}")
+    public ResponseEntity<String> getPublicDTOByEmail(@PathVariable String email) {
+        Optional<Student> student = studentService.findByEmail(email);
+        if (student.isPresent()) {
+            return ResponseEntity.ok().body(studentService.getStudentPublicDTO(email));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/public/{email}")
+    public ResponseEntity<String> getAdminDTOByEmail(@PathVariable String email) {
+        Optional<Student> student = studentService.findByEmail(email);
+        if (student.isPresent()) {
+            return ResponseEntity.ok().body(studentService.getStudentAdminDTO(email));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PostMapping("/{id}")
-    public Student creatStudent(@PathVariable Long id, @RequestBody Student student) {
-        return studentService.save(student);
+    @PostMapping
+    public ResponseEntity<Student> creatStudent(@RequestBody Student student) {
+        return ResponseEntity.ok().body(studentService.save(student));
     }
 
     @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable Long id, @RequestBody Student updateStudent) {
-        return studentService.updateStudent(id, updateStudent);
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student updateStudent) {
+        return ResponseEntity.ok().body(studentService.updateStudent(id, updateStudent));
     }
 
     @DeleteMapping("/{id}")
