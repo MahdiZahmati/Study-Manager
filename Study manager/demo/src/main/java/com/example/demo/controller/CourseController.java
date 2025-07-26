@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.CourseAdminDTO;
+import com.example.demo.DTO.CoursePublicDTO;
 import com.example.demo.model.Course;
 import com.example.demo.service.CourseService;
 import org.springframework.http.ResponseEntity;
@@ -19,25 +21,30 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
-        return ResponseEntity.ok().body(courseService.findAll());
+    public ResponseEntity<List<CoursePublicDTO>> getAllCoursePublicDTOs() {
+        return ResponseEntity.ok().body(courseService.getAllCoursePublicDTO());
     }
 
-    @GetMapping("/Admin/{title}")
-    public ResponseEntity<String> getAdminDTOByTitle(@PathVariable String title) {
+    @GetMapping
+    public ResponseEntity<List<CourseAdminDTO>> getAllCourseAdminDTOs() {
+        return ResponseEntity.ok().body(courseService.getAllCourseAdminDTO());
+    }
+
+    @GetMapping("/admin/{title}")
+    public ResponseEntity<String> getAdminDTOByTitle(@PathVariable(value = "title") String title) {
         Optional<Course> course = courseService.findByTitle(title);
         if (course.isPresent()) {
-            return ResponseEntity.ok().body(courseService.getCourseAdminDTO(title));
+            return ResponseEntity.ok().body(courseService.getCourseAdminDTO(title).toString());
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/public/{title}")
-    public ResponseEntity<String> getPublicDTOByTitle(@PathVariable String title) {
+    public ResponseEntity<String> getPublicDTOByTitle(@PathVariable(value = "title") String title) {
         Optional<Course> course = courseService.findByTitle(title);
         if (course.isPresent()) {
-            return ResponseEntity.ok().body(courseService.getCoursePublicDTO(title));
+            return ResponseEntity.ok().body(courseService.getCoursePublicDTO(title).toString());
         } else {
             return ResponseEntity.notFound().build();
         }

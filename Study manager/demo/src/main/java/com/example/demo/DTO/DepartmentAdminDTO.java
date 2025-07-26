@@ -9,14 +9,14 @@ import java.util.List;
 public class DepartmentAdminDTO {
     private Long id;
     private String name;
-    private String manager;
+    private Professor manager;
     private List<Professor> professors;
     private List<Course> courseList;
     private List<Student> studentList;
 
     public DepartmentAdminDTO() {}
 
-    public DepartmentAdminDTO(Long id, String name, String manager, List<Professor> professors,
+    public DepartmentAdminDTO(Long id, String name, Professor manager, List<Professor> professors,
                               List<Course> courseList, List<Student> studentList) {
         this.id = id;
         this.name = name;
@@ -44,11 +44,11 @@ public class DepartmentAdminDTO {
         this.name = name;
     }
 
-    public String getManager() {
+    public Professor getManager() {
         return manager;
     }
 
-    public void setManager(String manager) {
+    public void setManager(Professor manager) {
         this.manager = manager;
     }
 

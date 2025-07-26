@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +20,15 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok().body(userService.findAll());
+    public ResponseEntity<List<UserDTO>> getAllUserDTOs() {
+        return ResponseEntity.ok().body(userService.getAllUserDTOs());
     }
 
     @GetMapping("/{email}")
     public ResponseEntity<String> getUserDTOByEmail(@PathVariable String email) {
         Optional<User> user = userService.findByEmail(email);
         if (user.isPresent()) {
-            return ResponseEntity.ok().body(userService.getUserDTO(email));
+            return ResponseEntity.ok().body(userService.getUserDTO(email).toString());
         } else {
             return ResponseEntity.notFound().build();
         }

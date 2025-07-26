@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-
-
 import com.example.demo.DTO.CourseAdminDTO;
 import com.example.demo.DTO.CoursePublicDTO;
 import com.example.demo.model.Course;
@@ -25,35 +23,55 @@ public class CourseService extends GenericService<Course, Long>{
         this.courseRepository = courseRepository;
     }
 
-    @Transactional(readOnly = true)
-    public String getCoursePublicDTO(String title) {
-        Course course = courseRepository.findByTitle(title)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
-
+    private CoursePublicDTO mapToPublicDTO(Course course) {
+        String title = course.getTitle();
         int unit = course.getUnit();
         String deptName = course.getDepartment() != null
-                ? course.getDepartment().getName() : null;
-
+                ? course.getDepartment().getName()
+                : null;
         List<String> profNames = course.getProfessorList().stream()
                 .map(p -> p.getFirstName() + " " + p.getLastName())
                 .collect(Collectors.toList());
-
-        return new CoursePublicDTO(title, unit, deptName, profNames).toString();
+        return new CoursePublicDTO(title, unit, deptName, profNames);
     }
 
-    @Transactional(readOnly = true)
-    public String getCourseAdminDTO(String title) {
-        Course course = courseRepository.findByTitle(title)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
-
+    private CourseAdminDTO mapToAdminDTO(Course course) {
         Long id = course.getId();
+        String title = course.getTitle();
         int unit = course.getUnit();
         String deptName = course.getDepartment() != null
                 ? course.getDepartment().getName() : null;
         List<Professor> professors = course.getProfessorList();
         List<Student> students = course.getStudentList();
+        return new CourseAdminDTO(id, title, unit, deptName, students, professors);
+    }
 
-        return new CourseAdminDTO(id, title, unit, deptName, students, professors).toString();
+    @Transactional(readOnly = true)
+    public List<CoursePublicDTO> getAllCoursePublicDTO() {
+        return findAll().stream()
+                .map(this::mapToPublicDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<CourseAdminDTO> getAllCourseAdminDTO() {
+        return findAll().stream()
+                .map(this::mapToAdminDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public CoursePublicDTO getCoursePublicDTO(String title) {
+        Course course = courseRepository.findByTitle(title)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        return mapToPublicDTO(course);
+    }
+
+    @Transactional(readOnly = true)
+    public CourseAdminDTO getCourseAdminDTO(String title) {
+        Course course = courseRepository.findByTitle(title)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        return mapToAdminDTO(course);
     }
 
     public Optional<Course> findByTitle(String title) {

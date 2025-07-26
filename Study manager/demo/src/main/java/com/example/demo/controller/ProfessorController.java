@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.ProfessorAdminDTO;
 import com.example.demo.DTO.ProfessorPublicDTO;
 import com.example.demo.model.Professor;
 import com.example.demo.service.ProfessorService;
+import org.hibernate.mapping.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,25 +22,30 @@ public class ProfessorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Professor>> getAllProfessors() {
-        return ResponseEntity.ok().body(professorService.findAll());
+    public ResponseEntity<List<ProfessorAdminDTO>> getAllProfessorAdminDTOs() {
+        return ResponseEntity.ok().body(professorService.getAllProfessorAdminDTO());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProfessorPublicDTO>> getAllProfessorPublicDTOs() {
+        return ResponseEntity.ok().body(professorService.getAllProfessorPublicDTO());
     }
 
     @GetMapping("/admin/{email}")
-    public ResponseEntity<String> getAdminDTOByEmail(@PathVariable String email) {
+    public ResponseEntity<String> getAdminDTOByEmail(@PathVariable(value = "email") String email) {
         Optional<Professor> professor = professorService.findByEmail(email);
         if (professor.isPresent()) {
-            return ResponseEntity.ok().body(professorService.getProfessorPublicDTO(email));
+            return ResponseEntity.ok().body(professorService.getProfessorPublicDTO(email).toString());
         } else{
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/public/{email}")
-    public ResponseEntity<String> getPublicDTOByEmail(@PathVariable String email) {
+    public ResponseEntity<String> getPublicDTOByEmail(@PathVariable(value = "email") String email) {
         Optional<Professor> professor = professorService.findByEmail(email);
         if (professor.isPresent()) {
-            return ResponseEntity.ok().body(professorService.getProfessorAdminDTO(email));
+            return ResponseEntity.ok().body(professorService.getProfessorAdminDTO(email).toString());
         } else{
             return ResponseEntity.notFound().build();
         }
@@ -47,6 +54,14 @@ public class ProfessorController {
     @PostMapping
     public ResponseEntity<Professor> createProfessor(@RequestBody Professor professor) {
         return ResponseEntity.ok().body(professorService.save(professor));
+    }
+
+    @PostMapping("/{professorUsername}/offer/{courseTitle}")
+    public ResponseEntity<Void> offerCourse(
+            @PathVariable(value = "professorUsername") String professorUsername,
+            @PathVariable(value = "courseTitle") String courseTitle) {
+        professorService.offerCourse(professorUsername, courseTitle);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")

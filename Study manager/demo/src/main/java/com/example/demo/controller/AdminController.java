@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.AdminDTO;
 import com.example.demo.model.Admin;
 import com.example.demo.service.AdminService;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +20,15 @@ public class AdminController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Admin>> getAllAdmins() {
-        return ResponseEntity.ok().body(adminService.findAll());
+    public ResponseEntity<List<AdminDTO>> getAllAdmins() {
+        return ResponseEntity.ok().body(adminService.getAllAdmins());
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<String> getByUsername(@PathVariable String username) {
         Optional<Admin> admin = adminService.findByUserName(username);
         if (admin.isPresent()) {
-            return ResponseEntity.ok().body(adminService.getAdminDTO(username));
+            return ResponseEntity.ok().body(adminService.getAdminDTO(username).toString());
         } else {
             return ResponseEntity.notFound().build();
         }

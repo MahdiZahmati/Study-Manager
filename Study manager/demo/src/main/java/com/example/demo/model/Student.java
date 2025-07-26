@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -46,12 +47,19 @@ public class Student extends User{
     private List<Professor> professorList = new ArrayList<>();
 
     //constructors
-    public Student(String firstName, String lastName, String email, long nationalId,
-            String phoneNumber, String address, String city, double average , String studentCode) {
-        super(firstName, lastName, email, nationalId, phoneNumber, address, city);
+
+
+    public Student(String username, String password, Role role, String firstName, String lastName, String email,
+                   long nationalId, String phoneNumber, String address, String city, double average, String studentCode,
+                   Department department, List<Course> courseList, List<Professor> professorList) {
+        super(username, password, role, firstName, lastName, email, nationalId, phoneNumber, address, city);
         this.average = average;
         this.studentCode = studentCode;
+        this.department = department;
+        this.courseList = courseList;
+        this.professorList = professorList;
     }
+
     public Student() {}
 
 

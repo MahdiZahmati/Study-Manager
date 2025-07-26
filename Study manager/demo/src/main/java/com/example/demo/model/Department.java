@@ -16,8 +16,8 @@ public class Department {
     @Column(length = 20, nullable = false)
     private String name;
 
-    @Column(length = 20, nullable = false)
-    private String manager;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Professor manager;
 
     @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Professor> professorList = new ArrayList<>();
@@ -30,7 +30,12 @@ public class Department {
 
 
     //constructors
-    public Department(String name, String manager) {
+    public Department(String name) {
+        this.name = name;
+    }
+
+    public Department(Long id, String name, Professor manager) {
+        this.id = id;
         this.name = name;
         this.manager = manager;
     }
@@ -54,11 +59,11 @@ public class Department {
         this.name = name;
     }
 
-    public String getManager() {
+    public Professor getManager() {
         return manager;
     }
 
-    public void setManager(String manager) {
+    public void setManager(Professor manager) {
         this.manager = manager;
     }
 

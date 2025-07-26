@@ -1,17 +1,18 @@
 package com.example.demo.DTO;
 
 import com.example.demo.model.Course;
+import com.example.demo.model.Professor;
 
 import java.util.List;
 
 public class DepartmentPublicDTO {
     private String name;
-    private String manager;
+    private Professor manager;
     private List<String> courseNames;
 
     public DepartmentPublicDTO() {}
 
-    public DepartmentPublicDTO(String name, String manager, List<String> courseNames) {
+    public DepartmentPublicDTO(String name, Professor manager, List<String> courseNames) {
         this.name = name;
         this.manager = manager;
         this.courseNames = courseNames;
@@ -27,11 +28,11 @@ public class DepartmentPublicDTO {
         this.name = name;
     }
 
-    public String getManager() {
+    public Professor getManager() {
         return manager;
     }
 
-    public void setManager(String manager) {
+    public void setManager(Professor manager) {
         this.manager = manager;
     }
 

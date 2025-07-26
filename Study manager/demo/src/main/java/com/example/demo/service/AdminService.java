@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.AdminDTO;
-import com.example.demo.DTO.CoursePublicDTO;
 import com.example.demo.model.Admin;
-import com.example.demo.model.Course;
 import com.example.demo.repository.AdminRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -28,14 +26,27 @@ public class AdminService extends GenericService<Admin, Long> {
     }
 
     @Transactional(readOnly = true)
-    public String getAdminDTO(String username) {
+    public List<AdminDTO> getAllAdmins() {
+        return findAll().stream()
+                .map(admin -> {
+                    Long id = admin.getId();
+                    String name = admin.getUserName();
+                    String password = admin.getPassword();
+
+                    return new AdminDTO(id, name, password);
+                        }
+                ).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public AdminDTO getAdminDTO(String username) {
         Admin admin = adminRepository.findByUserName(username)
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
 
         Long id = admin.getId();
         String password = admin.getPassword();
 
-        return new AdminDTO(id, username, password).toString();
+        return new AdminDTO(id, username, password);
     }
 
     public Admin updateAdmin(String username, Admin updatedAdmin) {

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.Role;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -32,18 +33,10 @@ public class Professor extends User {
     //constructors
     public Professor() {}
 
-    public Professor(String firstName, String lastName, String email, long nationalId,
-                     String phoneNumber, String address, String city, Long id,
-                     List<Course> courseList, Department department, List<Student> studentList) {
-        super(firstName, lastName, email, nationalId, phoneNumber, address, city);
-        this.id = id;
-        this.courseList = courseList;
-        this.department = department;
-        this.studentList = studentList;
-    }
-
-    public Professor(Long id, List<Course> courseList, Department department, List<Student> studentList) {
-        this.id = id;
+    public Professor(String username, String password, Role role, String firstName, String lastName, String email,
+                     long nationalId, String phoneNumber, String address, String city, List<Course> courseList,
+                     Department department, List<Student> studentList) {
+        super(username, password, role, firstName, lastName, email, nationalId, phoneNumber, address, city);
         this.courseList = courseList;
         this.department = department;
         this.studentList = studentList;

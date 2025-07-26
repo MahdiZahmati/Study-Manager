@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -12,6 +13,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable=false, unique=true)
+    String username;
+    @Column(nullable=false)
+    String password;
+    @Enumerated(EnumType.STRING)
+    Role role;
     @Column(length= 20, nullable = false)
     private String firstName;
     @Column(length = 20, nullable = false)
@@ -34,8 +41,12 @@ public class User {
 
 
     //constructors
-    public User(String firstName, String lastName, String email, long nationalId,
-                String phoneNumber, String address, String city) {
+
+    public User(String username, String password, Role role, String firstName, String lastName,
+                String email, long nationalId, String phoneNumber, String address, String city) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -44,10 +55,35 @@ public class User {
         this.address = address;
         this.city = city;
     }
+
     public User() {}
 
-
     //getters & setters
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

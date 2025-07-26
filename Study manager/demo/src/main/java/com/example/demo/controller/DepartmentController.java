@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.DepartmentAdminDTO;
+import com.example.demo.DTO.DepartmentPublicDTO;
 import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
 import org.springframework.http.ResponseEntity;
@@ -19,28 +21,39 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Department>> getAllDepartments() {
-        return ResponseEntity.ok().body(departmentService.findAll());
+    public ResponseEntity<List<DepartmentAdminDTO>> getAllDepartmentAdminDTOs() {
+        return ResponseEntity.ok().body(departmentService.getAllDepartmentAdminDTO());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DepartmentPublicDTO>> getAllDepartmentPublicDTOs() {
+        return ResponseEntity.ok().body(departmentService.getAllDepartmentPublicDTO());
     }
 
     @GetMapping("/admin/{name}")
-    public ResponseEntity<String> getAdminDTOByName(@PathVariable String name) {
+    public ResponseEntity<String> getAdminDTOByName(@PathVariable(value = "name") String name) {
         Optional<Department> department = departmentService.findByName(name);
         if (department.isPresent()) {
-            return ResponseEntity.ok().body(departmentService.getDepartmentAdminDTO(name));
+            return ResponseEntity.ok().body(departmentService.getDepartmentAdminDTO(name).toString());
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/public/{name}")
-    public ResponseEntity<String> getPublicDTOByName(@PathVariable String name) {
+    public ResponseEntity<String> getPublicDTOByName(@PathVariable(value = "name") String name) {
         Optional<Department> department = departmentService.findByName(name);
         if (department.isPresent()) {
-            return ResponseEntity.ok().body(departmentService.getDepartmentPublicDTO(name));
+            return ResponseEntity.ok().body(departmentService.getDepartmentPublicDTO(name).toString());
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{name}/average-gpa")
+    public ResponseEntity<String> getAverageGpa(@PathVariable String name) {
+        double average = departmentService.getAverageForDepartment(name);
+        return ResponseEntity.ok().body("Average GPA of department " + name + " is: " + average);
     }
 
     @PostMapping
