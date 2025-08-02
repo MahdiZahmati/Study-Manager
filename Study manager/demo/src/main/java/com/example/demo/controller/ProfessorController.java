@@ -21,12 +21,12 @@ public class ProfessorController {
         this.professorService = professorService;
     }
 
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<List<ProfessorAdminDTO>> getAllProfessorAdminDTOs() {
         return ResponseEntity.ok().body(professorService.getAllProfessorAdminDTO());
     }
 
-    @GetMapping
+    @GetMapping("/public")
     public ResponseEntity<List<ProfessorPublicDTO>> getAllProfessorPublicDTOs() {
         return ResponseEntity.ok().body(professorService.getAllProfessorPublicDTO());
     }

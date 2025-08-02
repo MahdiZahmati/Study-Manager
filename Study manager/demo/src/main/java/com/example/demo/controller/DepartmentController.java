@@ -20,12 +20,12 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<List<DepartmentAdminDTO>> getAllDepartmentAdminDTOs() {
         return ResponseEntity.ok().body(departmentService.getAllDepartmentAdminDTO());
     }
 
-    @GetMapping
+    @GetMapping("/public")
     public ResponseEntity<List<DepartmentPublicDTO>> getAllDepartmentPublicDTOs() {
         return ResponseEntity.ok().body(departmentService.getAllDepartmentPublicDTO());
     }

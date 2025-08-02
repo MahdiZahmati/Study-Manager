@@ -14,27 +14,27 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginProcessingUrl("/auth/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/", true)
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/auth/login?logout")
-                        .permitAll()
-                )
-        ;
-        return http.build();
-    }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/auth/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form
+//                        .loginProcessingUrl("/auth/login")
+//                        .usernameParameter("username")
+//                        .passwordParameter("password")
+//                        .defaultSuccessUrl("/", true)
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/auth/logout")
+//                        .logoutSuccessUrl("/auth/login?logout")
+//                        .permitAll()
+//                )
+//        ;
+//        return http.build();
+//    }
 
 }

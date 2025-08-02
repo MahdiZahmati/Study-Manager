@@ -20,14 +20,14 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<CoursePublicDTO>> getAllCoursePublicDTOs() {
-        return ResponseEntity.ok().body(courseService.getAllCoursePublicDTO());
-    }
-
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<List<CourseAdminDTO>> getAllCourseAdminDTOs() {
         return ResponseEntity.ok().body(courseService.getAllCourseAdminDTO());
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<List<CoursePublicDTO>> getAllCoursePublicDTOs() {
+        return ResponseEntity.ok().body(courseService.getAllCoursePublicDTO());
     }
 
     @GetMapping("/admin/{title}")

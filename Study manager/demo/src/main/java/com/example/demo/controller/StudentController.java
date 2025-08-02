@@ -20,12 +20,12 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<List<StudentAdminDTO>> getAllStudentAdminDTOs() {
         return ResponseEntity.ok().body(studentService.getAllStudentAdminDTOs());
     }
 
-    @GetMapping
+    @GetMapping("/public")
     public ResponseEntity<List<StudentPublicDTO>> getAllStudentPublicDTOs() {
         return ResponseEntity.ok().body(studentService.getAllStudentPublicDTOs());
     }
